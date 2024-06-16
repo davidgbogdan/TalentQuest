@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "recrutors")
-public class Recruter {
+@Table(name = "recruiters")
+public class Recruiter {
 
     @Id
     @Column(nullable = false)

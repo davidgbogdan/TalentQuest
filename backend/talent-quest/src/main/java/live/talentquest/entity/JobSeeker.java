@@ -37,7 +37,7 @@ public class JobSeeker {
     @Builder.Default
     @OneToMany(
             fetch = FetchType.EAGER,
-            mappedBy = "job_seekers",
+            mappedBy = "jobSeeker",
             orphanRemoval = true
     )
     private Set<Application> applications = new HashSet<>();

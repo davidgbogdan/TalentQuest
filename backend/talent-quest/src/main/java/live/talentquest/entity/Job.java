@@ -14,6 +14,7 @@ import java.util.Set;
 @Builder
 @Table(name = "jobs")
 public class Job {
+
     @Id
     @GeneratedValue
     private Long id;
@@ -37,7 +38,7 @@ public class Job {
     private String industry;
 
     @Column(nullable = false, name = "salary")
-    private double salary;
+    private Double salary;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -53,5 +54,5 @@ public class Job {
     @ManyToOne
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Recruter recruter;
+    private Recruiter recruiter;
 }
