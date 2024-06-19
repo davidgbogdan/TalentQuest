@@ -22,7 +22,7 @@ public class Application {
     @ManyToOne
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private JobSeeker jobSeeker;
+    private Candidate candidate;
 
     @ManyToOne
     @ToString.Exclude

@@ -1,9 +1,9 @@
 package live.talentquest.repository;
 
-import live.talentquest.entity.JobSeeker;
+import live.talentquest.entity.Candidate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface JobSeekerRepository extends JpaRepository<JobSeeker, String> {
+public interface CandidateRepository extends JpaRepository<Candidate, String> {
 }

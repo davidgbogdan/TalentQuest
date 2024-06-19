@@ -10,10 +10,10 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name = "job_seekers")
-public class JobSeeker {
+@Entity(name = "candidate")
+public class Candidate {
     @Id
-    @Column(nullable = false, name = "username")
+    @Column(nullable = false)
     private String username;
 
     @Column(nullable = false, name = "password")
@@ -31,13 +31,12 @@ public class JobSeeker {
     @Column(nullable = false, name = "email")
     private String email;
 
-
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Builder.Default
     @OneToMany(
             fetch = FetchType.EAGER,
-            mappedBy = "jobSeeker",
+            mappedBy = "candidate",
             orphanRemoval = true
     )
     private Set<Application> applications = new HashSet<>();
