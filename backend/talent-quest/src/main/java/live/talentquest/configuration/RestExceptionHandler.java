@@ -21,7 +21,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 e,
                 responseBody,
                 new HttpHeaders(),
-                generalException.getStatus(),
+                generalException.getHttpStatus(),
                 request
         );
     }
