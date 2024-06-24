@@ -1,12 +1,12 @@
 package live.talentquest.service;
 
-import live.talentquest.dto.recruiter.RecruiterRequestDto;
-import live.talentquest.dto.recruiter.RecruiterResponseDto;
+import live.talentquest.dto.candidate.CandidateRequestDto;
+import live.talentquest.dto.candidate.CandidateResponseDto;
 import live.talentquest.dto.security.JwtDto;
 import live.talentquest.dto.security.UserSessionDto;
-import live.talentquest.entity.Recruiter;
+import live.talentquest.entity.Candidate;
 import live.talentquest.exception.recruiter.RecruiterNotFoundException;
-import live.talentquest.repository.RecruiterRepository;
+import live.talentquest.repository.CandidateRepository;
 import live.talentquest.security.CustomUserDetails;
 import live.talentquest.security.JwtProvider;
 import lombok.AllArgsConstructor;
@@ -19,24 +19,24 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class RecruiterService {
-    private RecruiterRepository recruiterRepository;
+public class CandidateService {
+    private CandidateRepository candidateRepository;
     private ModelMapper modelMapper;
     private AuthenticationManager authenticationManager;
     private PasswordEncoder passwordEncoder;
     private JwtProvider jwtProvider;
     private UserValidationService userValidationService;
 
-    private Recruiter getCurrentRecruiter() {
-        return (Recruiter) ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+    private Candidate getCurrentCandidate() {
+        return (Candidate) ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
     }
 
-    public RecruiterResponseDto register(RecruiterRequestDto recruiterRequestDto) {
-        userValidationService.validateEmail(recruiterRequestDto.getEmail());
-        var recruiter = modelMapper.map(recruiterRequestDto, Recruiter.class);
-        recruiter.setPassword(passwordEncoder.encode(recruiterRequestDto.getPassword()));
-        var savedEntity = recruiterRepository.save(recruiter);
-        return modelMapper.map(savedEntity, RecruiterResponseDto.class);
+    public CandidateResponseDto register(CandidateRequestDto candidateRequestDto) {
+        userValidationService.validateEmail(candidateRequestDto.getEmail());
+        var candidate = modelMapper.map(candidateRequestDto, Candidate.class);
+        candidate.setPassword(passwordEncoder.encode(candidateRequestDto.getPassword()));
+        var savedEntity = candidateRepository.save(candidate);
+        return modelMapper.map(savedEntity, CandidateResponseDto.class);
     }
 
     public JwtDto login(UserSessionDto userSessionDto) {
@@ -45,7 +45,7 @@ public class RecruiterService {
                 userSessionDto.getPassword()
         ));
 
-        var user = recruiterRepository.findByEmail(userSessionDto.getEmail())
+        var user = candidateRepository.findByEmail(userSessionDto.getEmail())
                 .orElseThrow(RecruiterNotFoundException::new);
 
         String jwt = jwtProvider.generateJwt(user);
