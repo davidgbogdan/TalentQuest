@@ -15,6 +15,7 @@ import java.security.SignatureException;
 
 @RestControllerAdvice
 public class SecurityExceptionHandler {
+
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleSecurityException(Exception exception) {
         ProblemDetail errorDetail = null;

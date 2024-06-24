@@ -1,38 +1,28 @@
 package live.talentquest.entity;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
+import java.util.HashSet;
+import java.util.Set;
+
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
-@Table(name = "recruiters")
-public class Recruiter {
-
-    @Id
-    @Column(nullable = false)
-    private String username;
-
-    @Column(nullable = false, name = "password")
-    private String password;
-
-    @Column(nullable = false, name = "first_name")
-    private String firstName;
-
-    @Column(nullable = false, name = "last_name")
-    private String lastName;
-
-    @Column(nullable = false, name = "phone")
-    private String phone;
-
-    @Column(nullable = false, name = "email")
-    private String email;
+public class Recruiter extends User{
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            fetch = FetchType.EAGER,
+            mappedBy = "recruiter"
+    )
+    Set<Job> jobs = new HashSet<>();
 }

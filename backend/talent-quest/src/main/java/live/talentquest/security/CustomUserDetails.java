@@ -1,34 +1,49 @@
 package live.talentquest.security;
 
+import live.talentquest.entity.Candidate;
+import live.talentquest.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
-@Component
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-public class SecurityUserDetails implements UserDetails {
-    private String username;
+@SuperBuilder
+@AllArgsConstructor
+public class CustomUserDetails implements UserDetails {
+    private String email;
     private String password;
-    private Collection<? extends GrantedAuthority> authorities;
+    private List<SimpleGrantedAuthority> roles;
+    private User user;
+
+    public CustomUserDetails(User user) {
+        this.user = user;
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.roles = Collections.singletonList(new SimpleGrantedAuthority(user instanceof Candidate ? "CANDIDATE" : "RECRUITER"));
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return roles;
     }
 
     @Override
     public String getPassword() {
-        return "";
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return email;
     }
 
     @Override

@@ -4,11 +4,10 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import live.talentquest.entity.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -17,16 +16,15 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 @Component
-@AllArgsConstructor
-@NoArgsConstructor
+@Slf4j
 public class JwtProvider {
-    @Value("{jwt.secret}")
+
+    @Value("${jwt.secret}")
     private String secret;
     @Value("${jwt.ttlInMinutes}")
     private int ttlInMinutes;
 
-    public String extractUsername(String jwt) {
-
+    public String extractEmail(String jwt) {
         Claims claims = Jwts.parser()
                 .verifyWith(secretKey())
                 .build()
@@ -41,12 +39,13 @@ public class JwtProvider {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateJwt(UserDetails userDetails) {
-        Date expirationDateTime = Date.from(ZonedDateTime.now().plusMinutes(ttlInMinutes).toInstant());
-        var roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
+    public String generateJwt(User user) {
+        CustomUserDetails customUserDetails = new CustomUserDetails(user);
+        var expirationDateTime = Date.from(ZonedDateTime.now().plusMinutes(ttlInMinutes).toInstant());
+        var roles = customUserDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
 
         return Jwts.builder()
-                .subject(userDetails.getUsername())
+                .subject(customUserDetails.getUsername())
                 .claim("roles", roles)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(expirationDateTime)

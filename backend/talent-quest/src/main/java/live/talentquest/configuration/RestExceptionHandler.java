@@ -1,6 +1,6 @@
 package live.talentquest.configuration;
 
-import live.talentquest.exception.JobPlatformException;
+import live.talentquest.exception.GeneralException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.HttpHeaders;
@@ -12,16 +12,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(value = {JobPlatformException.class})
+    @ExceptionHandler(value = {GeneralException.class})
     public ResponseEntity<Object> handleException(RuntimeException e, WebRequest request) {
-        var storeException = (JobPlatformException) e;
-        var responseBody = new ErrorResponse(storeException.getMessage());
+        var generalException = (GeneralException) e;
+        var responseBody = new ErrorResponse(generalException.getMessage());
 
         return handleExceptionInternal(
                 e,
                 responseBody,
                 new HttpHeaders(),
-                storeException.getHttpStatus(),
+                generalException.getStatus(),
                 request
         );
     }

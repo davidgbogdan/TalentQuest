@@ -7,25 +7,23 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Builder
-@Entity(name = "applications")
 public class Application {
-
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    @Builder.Default
-    private ApplicationStatus status = ApplicationStatus.IN_REVIEW;
+    @Column(nullable = false)
+    private ApplicationStatus applicationStatus;
 
-    @ManyToOne
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @ManyToOne
     private Candidate candidate;
 
-    @ManyToOne
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @ManyToOne
     private Job job;
 }

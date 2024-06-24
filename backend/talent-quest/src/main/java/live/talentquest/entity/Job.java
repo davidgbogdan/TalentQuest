@@ -11,48 +11,43 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Builder
-@Table(name = "jobs")
+@Table(name = "job")
 public class Job {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name = "title")
-    private String title;
+    @Column(nullable = false, name = "name", unique = true)
+    private String name;
 
-    @Column(nullable = false, name = "description")
+    @Column(name = "description")
     private String description;
 
     @Column(nullable = false, name = "location")
     private String location;
 
-    @Column(nullable = false, name = "type")
-    private JobType type;
-
     @Column(nullable = false, name = "company_name")
     private String companyName;
-
-    @Column(nullable = false, name = "industry")
-    private String industry;
 
     @Column(nullable = false, name = "salary")
     private Double salary;
 
+    @Column(nullable = false, name = "type")
+    private JobType type;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @Builder.Default
     @OneToMany(
-            cascade = {CascadeType.MERGE, CascadeType.PERSIST},
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
             fetch = FetchType.EAGER,
-            mappedBy = "job",
-            orphanRemoval = true
+            mappedBy = "job"
     )
     private Set<Application> applications = new HashSet<>();
 
-    @ManyToOne
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @ManyToOne
     private Recruiter recruiter;
 }

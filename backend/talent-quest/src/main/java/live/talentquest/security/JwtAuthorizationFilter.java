@@ -5,11 +5,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.hibernate.annotations.Comment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -20,7 +17,7 @@ import java.io.IOException;
 @AllArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtProvider jwtProvider;
-    private final UserDetailsService userDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
     private final HandlerExceptionResolver handlerExceptionResolver;
 
     @Override
@@ -28,7 +25,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            if (checkAuthorizationEndpoints(request)) {
+            if (!request.getServletPath().contains("recruiters") && !request.getServletPath().contains("candidates")) {
                 response.setStatus(401);
             } else {
                 filterChain.doFilter(request, response);
@@ -39,34 +36,22 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         try {
             String jwt = authHeader.substring(7);
-            String username = jwtProvider.extractUsername(jwt);
+            String username = jwtProvider.extractEmail(jwt);
 
             if (username != null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+                CustomUserDetails customUserDetails = this.customUserDetailsService.loadUserByUsername(username);
                 var authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
+                        customUserDetails,
                         null,
-                        userDetails.getAuthorities()
+                        customUserDetails.getAuthorities()
                 );
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
+
+            filterChain.doFilter(request, response);
         } catch (Exception exception) {
             handlerExceptionResolver.resolveException(request, response, null, exception);
-            response.setStatus(401);
-            return;
         }
-
-        filterChain.doFilter(request, response);
-    }
-
-    private boolean checkAuthorizationEndpoints(HttpServletRequest request){
-        boolean checkTeacherEndpoints = !request.getServletPath().contains("recruiters");
-        boolean checkCourseEndpoints = !request.getServletPath().contains("jobs");
-        boolean checkStudentEndpoints = !request.getServletPath().contains("candidates");
-
-        return checkTeacherEndpoints
-                && checkCourseEndpoints
-                && checkStudentEndpoints;
     }
 }

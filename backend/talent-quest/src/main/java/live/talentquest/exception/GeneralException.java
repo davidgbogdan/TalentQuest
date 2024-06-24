@@ -2,11 +2,12 @@ package live.talentquest.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @Data
-@AllArgsConstructor
-public class JobPlatformException extends RuntimeException {
-    private HttpStatus httpStatus;
+@NoArgsConstructor
+public class GeneralException extends RuntimeException {
+    private HttpStatus status;
     private String message;
 }

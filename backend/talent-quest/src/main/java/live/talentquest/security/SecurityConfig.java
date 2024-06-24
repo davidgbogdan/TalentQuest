@@ -2,7 +2,7 @@ package live.talentquest.security;
 
 import live.talentquest.repository.CandidateRepository;
 import live.talentquest.repository.RecruiterRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,22 +23,25 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
-    private RecruiterRepository recruiterRepository;
-    private CandidateRepository candidateRepository;
+    private final RecruiterRepository recruiterRepository;
+    private final CandidateRepository candidateRepository;
+
+    @Autowired
+    public SecurityConfig(RecruiterRepository recruiterRepository, CandidateRepository candidateRepository) {
+        this.recruiterRepository = recruiterRepository;
+        this.candidateRepository = candidateRepository;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity, JwtAuthorizationFilter jwtAuthorizationFilter) throws Exception {
         return httpSecurity
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/recruiters").permitAll()
-                        .requestMatchers("/recruiters/*").permitAll()
-                        .requestMatchers("/candidates").permitAll()
-                        .requestMatchers("/candidates/*").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/jobs").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/jobs/*").permitAll()
+                        .requestMatchers(HttpMethod.POST).permitAll()
+                        .requestMatchers("/recruiters/**").permitAll()
+                        .requestMatchers("/candidates/**").permitAll()
+                        .requestMatchers("/jobs/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
@@ -50,11 +53,11 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new SecurityUserDetailsService(candidateRepository, recruiterRepository);
+        return new CustomUserDetailsService(recruiterRepository, candidateRepository);
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder(){
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
@@ -64,10 +67,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(
-            UserDetailsService userDetailsService,
-            PasswordEncoder passwordEncoder
-    ) {
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         var authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder);
