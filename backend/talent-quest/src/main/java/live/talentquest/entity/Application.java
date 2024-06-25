@@ -26,4 +26,9 @@ public class Application {
     @EqualsAndHashCode.Exclude
     @ManyToOne
     private Job job;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToOne(mappedBy = "application", cascade = CascadeType.ALL)
+    private CV cv;
 }

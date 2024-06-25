@@ -17,13 +17,12 @@ public class JobResource {
     private JobService jobService;
 
     @GetMapping
-    @Secured({"RECRUITER"})
     public List<JobResponseDto> getAllJobs(){
         return jobService.getAllJobs();
     }
 
     @GetMapping("/me")
-
+    @Secured({"RECRUITER"})
     public List<JobResponseDto> getJobsForRecruiter(){
         return jobService.getJobs();
     }
