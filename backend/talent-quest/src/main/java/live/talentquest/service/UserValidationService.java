@@ -12,7 +12,7 @@ public class UserValidationService {
     private final CandidateRepository candidateRepository;
     private final RecruiterRepository recruiterRepository;
 
-    public void validateEmail(String email){
+    public void validateEmail(String email) {
         if (candidateRepository.findByEmail(email).isPresent() || recruiterRepository.findByEmail(email).isPresent()) {
             throw new UserAlreadyRegisteredException();
         }

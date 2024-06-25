@@ -7,7 +7,6 @@ import live.talentquest.entity.CV;
 import live.talentquest.entity.Candidate;
 import live.talentquest.enums.ApplicationStatus;
 import live.talentquest.repository.ApplicationRepository;
-import live.talentquest.repository.CandidateRepository;
 import live.talentquest.repository.JobRepository;
 import live.talentquest.security.CustomUserDetails;
 import lombok.AllArgsConstructor;
@@ -28,7 +27,6 @@ import java.util.stream.Collectors;
 public class ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final JobRepository jobRepository;
-    private final CandidateRepository candidateRepository;
 
     private Candidate getCurrentCandidate() {
         return (Candidate) ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
@@ -47,12 +45,10 @@ public class ApplicationService {
 
         saveCV(application, applicationRequestDto.getCvFile());
 
-        // Extract keywords and calculate matching score
         Set<String> cvKeywords = extractCvKeywords(applicationRequestDto.getCvFile());
         Set<String> jobKeywords = extractJobKeywords(job.getDescription());
         double matchScore = KeywordMatcherService.calculateMatchScore(cvKeywords, jobKeywords);
 
-        // Set the match score
         application.setMatchScore(matchScore);
 
         applicationRepository.save(application);

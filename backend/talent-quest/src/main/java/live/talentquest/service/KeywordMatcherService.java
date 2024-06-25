@@ -13,6 +13,6 @@ public class KeywordMatcherService {
         intersection.retainAll(jobDescriptionKeywords);
 
         double matchRatio = (double) intersection.size() / jobDescriptionKeywords.size();
-        return Math.min(matchRatio * 10, 10); // Scale the score to be from 0 to 10, cap at 10
+        return Math.min(matchRatio * 10, 10);
     }
 }

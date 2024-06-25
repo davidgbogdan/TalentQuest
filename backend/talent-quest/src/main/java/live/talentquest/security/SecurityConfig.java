@@ -42,6 +42,7 @@ public class SecurityConfig {
                         .requestMatchers("/recruiters/**").permitAll()
                         .requestMatchers("/candidates/**").permitAll()
                         .requestMatchers("/jobs/**").permitAll()
+                        .requestMatchers("/applications/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->

@@ -1,11 +1,7 @@
 package live.talentquest.service;
 
-import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.parser.txt.TXTParser;
-import org.apache.tika.sax.BodyContentHandler;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
@@ -25,7 +21,6 @@ public class KeywordExtractorService {
     }
 
     public static Set<String> extractKeywords(String text) {
-        // A simple keyword extraction logic using split. You can replace this with more advanced NLP techniques.
         return List.of(text.split("\\W+")).stream()
                 .map(String::toLowerCase)
                 .filter(word -> word.length() > 2)
