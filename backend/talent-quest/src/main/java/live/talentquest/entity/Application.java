@@ -31,4 +31,7 @@ public class Application {
     @EqualsAndHashCode.Exclude
     @OneToOne(mappedBy = "application", cascade = CascadeType.ALL)
     private CV cv;
+
+    @Column(nullable = false)
+    private double matchScore;
 }
