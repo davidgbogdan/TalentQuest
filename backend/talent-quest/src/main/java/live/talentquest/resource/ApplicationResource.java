@@ -22,6 +22,7 @@ public class ApplicationResource {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Secured("CANDIDATE")
     public void applyToJob(@RequestParam Long jobId, @RequestParam("cvFile") MultipartFile cvFile) throws IOException, TikaException, SAXException {
         ApplicationRequestDto applicationRequestDto = new ApplicationRequestDto();
         applicationRequestDto.setJobId(jobId);
