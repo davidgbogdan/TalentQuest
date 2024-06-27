@@ -5,6 +5,7 @@ import live.talentquest.dto.recruiter.RecruiterResponseDto;
 import live.talentquest.dto.security.JwtDto;
 import live.talentquest.dto.security.UserSessionDto;
 import live.talentquest.entity.Recruiter;
+import live.talentquest.enums.Role;
 import live.talentquest.exception.recruiter.RecruiterNotFoundException;
 import live.talentquest.repository.RecruiterRepository;
 import live.talentquest.security.CustomUserDetails;
@@ -49,7 +50,8 @@ public class RecruiterService {
                 .orElseThrow(RecruiterNotFoundException::new);
 
         String jwt = jwtProvider.generateJwt(user);
+        Role role = Role.RECRUITER;
 
-        return new JwtDto(jwt);
+        return new JwtDto(jwt, role);
     }
 }
