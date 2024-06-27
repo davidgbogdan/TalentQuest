@@ -20,10 +20,6 @@ public class JobService {
     private JobRepository jobRepository;
     private ModelMapper modelMapper;
 
-    private Candidate getCurrntCandidate() {
-        return (Candidate) ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-    }
-
     private Recruiter getCurrentRecruiter() {
         return (Recruiter) ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
     }
