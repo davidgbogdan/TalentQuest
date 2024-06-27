@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { TextField, Button, Container, Typography, Box, Paper, Avatar, Link, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { TextField, Button, Container, Typography, Box, Paper, Avatar, Link, Grid, FormControl, InputLabel, Select, MenuItem, Alert } from '@mui/material';
 import { PersonAdd as PersonAddIcon } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import { register as registerCandidate } from '../services/candidateService';
 import { register as registerRecruiter } from '../services/recruiterService';
 
@@ -11,6 +12,17 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        navigate('/');
+      }, 3000); // Redirect to login page after 3 seconds
+    }
+  }, [success, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -23,7 +35,9 @@ const RegisterPage = () => {
         response = await registerRecruiter(data);
       }
       console.log('Registration successful:', response.data);
+      setSuccess(true);
     } catch (error) {
+      setError('Error registering: ' + error.message);
       console.error('Error registering:', error);
     }
   };
@@ -74,6 +88,8 @@ const RegisterPage = () => {
                 </Typography>
               </Box>
               <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+                {success && <Alert severity="success">Registration successful! Redirecting to login...</Alert>}
+                {error && <Alert severity="error">{error}</Alert>}
                 <FormControl fullWidth margin="normal">
                   <InputLabel>Role</InputLabel>
                   <Select
