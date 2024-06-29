@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Container, Typography, Box, Paper, Button, TextField, Grid, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, FormControl, InputLabel, Select, MenuItem, Alert } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { getJobsForRecruiter, addJob } from '../services/recruiterService';
-import Sidebar from '../components/Sidebar'; 
+import Sidebar from '../components/Sidebar';
+import JobDetailsPopup from '../components/JobDetailsPopup'; // Import the JobDetailsPopup component
 
 const RecruiterDashboard = () => {
   const [jobs, setJobs] = useState([]);
@@ -16,6 +17,8 @@ const RecruiterDashboard = () => {
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     fetchJobs();
@@ -57,9 +60,19 @@ const RecruiterDashboard = () => {
     }
   };
 
+  const handleJobClick = (job) => {
+    setSelectedJob(job);
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+    setSelectedJob(null);
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
-      <Sidebar /> {/* Include the sidebar component */}
+      <Sidebar />
       <Container component="main" maxWidth="lg" sx={{ mt: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Recruiter Dashboard
@@ -155,7 +168,7 @@ const RecruiterDashboard = () => {
                 </Typography>
                 <List>
                   {jobs.map((job) => (
-                    <ListItem key={job.id} divider>
+                    <ListItem key={job.id} divider button onClick={() => handleJobClick(job)}>
                       <ListItemText
                         primary={job.name}
                         secondary={`${job.description} - ${job.location} - ${job.salary}`}
@@ -172,6 +185,13 @@ const RecruiterDashboard = () => {
             </Grid>
           </Grid>
         </Box>
+        {selectedJob && (
+          <JobDetailsPopup
+            job={selectedJob}
+            open={isPopupOpen}
+            onClose={handleClosePopup}
+          />
+        )}
       </Container>
     </Box>
   );
