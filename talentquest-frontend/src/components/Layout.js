@@ -1,11 +1,14 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import NavBar from './NavBar';
 
 const Layout = () => {
+  const location = useLocation();
+  const noNavBarRoutes = ['/','/register'];
+
   return (
     <>
-      <NavBar />
+      {!noNavBarRoutes.includes(location.pathname) && <NavBar />}
       <Outlet />
     </>
   );
