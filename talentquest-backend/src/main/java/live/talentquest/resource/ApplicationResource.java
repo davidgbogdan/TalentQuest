@@ -2,10 +2,12 @@ package live.talentquest.resource;
 
 import live.talentquest.dto.application.ApplicationRequestDto;
 import live.talentquest.dto.application.ApplicationResponseDto;
+import live.talentquest.entity.CV;
 import live.talentquest.service.ApplicationService;
 import lombok.AllArgsConstructor;
 import org.apache.tika.exception.TikaException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,5 +36,14 @@ public class ApplicationResource {
     @Secured("RECRUITER")
     public List<ApplicationResponseDto> getApplicationsByJob(@PathVariable Long jobId) {
         return applicationService.getApplicationsByJob(jobId);
+    }
+
+    @GetMapping("/{applicationId}/cv")
+    @Secured("RECRUITER")
+    public ResponseEntity<byte[]> getCvByApplicationId(@PathVariable Long applicationId) {
+        CV cv = applicationService.getCvByApplicationId(applicationId);
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=" + cv.getFileName())
+                .body(cv.getFileData());
     }
 }

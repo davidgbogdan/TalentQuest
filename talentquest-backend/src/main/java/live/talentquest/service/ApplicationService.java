@@ -92,4 +92,10 @@ public class ApplicationService {
                 .applicationStatus(application.getApplicationStatus())
                 .build();
     }
+
+    public CV getCvByApplicationId(Long applicationId) {
+        Application application = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new RuntimeException("Application not found"));
+        return application.getCv();
+    }
 }
