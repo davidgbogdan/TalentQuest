@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Dialog, DialogTitle, DialogContent, List, ListItem, ListItemText, Button } from '@mui/material';
 import { getApplicationsByJob, getCvByApplicationId } from '../services/applicationService';
-import PDFViewer from './PDFViewer'; // Import the PDFViewer component
+import PDFViewer from './PDFViewer'; 
 
 const JobDetailsPopup = ({ job, open, onClose }) => {
   const [applications, setApplications] = useState([]);

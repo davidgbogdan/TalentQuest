@@ -3,7 +3,7 @@ import { Container, Typography, Box, Paper, Button, TextField, Grid, List, ListI
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { getJobsForRecruiter, addJob } from '../services/recruiterService';
 import Sidebar from '../components/Sidebar';
-import JobDetailsPopup from '../components/JobDetailsPopup'; // Import the JobDetailsPopup component
+import JobDetailsPopup from '../components/JobDetailsPopup';
 
 const RecruiterDashboard = () => {
   const [jobs, setJobs] = useState([]);
