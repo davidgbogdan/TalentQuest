@@ -32,11 +32,11 @@ public class JobService {
     }
 
     public List<JobResponseDto> getJobs() {
-        var teacher = getCurrentRecruiter();
-        return teacher
+        var recruiter = getCurrentRecruiter();
+        return recruiter
                 .getJobs()
                 .stream()
-                .map(course -> modelMapper.map(course, JobResponseDto.class))
+                .map(job -> modelMapper.map(job, JobResponseDto.class))
                 .toList();
     }
 

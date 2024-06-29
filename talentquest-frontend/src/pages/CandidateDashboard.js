@@ -47,7 +47,7 @@ const CandidateDashboard = () => {
                       Company: {job.companyName}
                     </Typography>
                     <Typography variant="body2">
-                      Salary: ${job.salary}
+                      Salary: {job.salary}
                     </Typography>
                     <Typography variant="body2">
                       Job Type: {job.jobType}
