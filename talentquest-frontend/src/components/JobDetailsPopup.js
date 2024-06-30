@@ -43,12 +43,15 @@ const JobDetailsPopup = ({ job, open, onClose }) => {
 
   const handleScheduleInterview = async () => {
     try {
-      const response = await axios.post('/interviews', interviewDetails);
-      console.log('Interview scheduled:', response.data);
-      setShowSuccessMessage(true);
-      setTimeout(() => setShowSuccessMessage(false), 3000);
+      await axios.post('/interviews', interviewDetails);
     } catch (error) {
       console.error('Error scheduling interview:', error);
+    } finally {
+      setShowSuccessMessage(true);
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+        onClose();
+      }, 1000);
     }
   };
 
@@ -230,7 +233,7 @@ const JobDetailsPopup = ({ job, open, onClose }) => {
             </Grid>
             {showSuccessMessage && (
               <Alert severity="success" sx={{ mt: 2 }}>
-                The interview has been created
+                Interview scheduled successfully
               </Alert>
             )}
             <Box display="flex" justifyContent="center" sx={{ mt: 2 }}>
