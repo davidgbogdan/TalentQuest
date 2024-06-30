@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/system';
 
 const StyledAppBar = styled(AppBar)({
-  backgroundColor: '#3f51b5', // Primary color
+  backgroundColor: '#3f51b5', 
 });
 
 const StyledToolbar = styled(Toolbar)({
