@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Grid, Card, CardContent, CardActions, Button, Typography, Box } from '@mui/material';
+import { Container, Grid, Card, CardContent, Button, Typography, Box, Avatar } from '@mui/material';
 import { getAllJobs } from '../services/jobService';
-import Sidebar from '../components/Sidebar';
 import ApplyJobPopup from '../components/ApplyJobPopup';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import BusinessIcon from '@mui/icons-material/Business';
 
 const CandidateDashboard = () => {
   const [jobs, setJobs] = useState([]);
@@ -43,33 +45,54 @@ const CandidateDashboard = () => {
           {error && <Typography color="error">{error}</Typography>}
           <Grid container spacing={4}>
             {jobs.map((job) => (
-              <Grid item key={job.id} xs={12} sm={6} md={4}>
-                <Card elevation={3} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
+              <Grid item key={job.id} xs={12}>
+                <Card
+                  elevation={3}
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    padding: 2,
+                    borderRadius: 2,
+                    boxShadow: 3,
+                    marginBottom: 2,
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Avatar alt={job.companyName} src={job.companyLogo} sx={{ marginRight: 2 }} />
+                    <Box>
+                      <Typography variant="h6" component="h2">
+                        {job.name}
+                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', color: 'text.secondary' }}>
+                        <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', marginRight: 1 }}>
+                          <LocationOnIcon fontSize="small" />
+                          {job.location}
+                        </Typography>
+                        <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', marginRight: 1 }}>
+                          <BusinessIcon fontSize="small" />
+                          {job.companyName}
+                        </Typography>
+                        <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center' }}>
+                          <MonetizationOnIcon fontSize="small" />
+                          {job.salary}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
                   <CardContent>
-                    <Typography variant="h6" component="h2" gutterBottom>
-                      {job.name}
-                    </Typography>
-                    <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-                      {job.location}
-                    </Typography>
-                    <Typography variant="body2" gutterBottom>
+                    <Typography variant="body2" color="textSecondary">
                       {job.description}
                     </Typography>
-                    <Typography variant="body2" mt={2}>
-                      Company: {job.companyName}
-                    </Typography>
-                    <Typography variant="body2">
-                      Salary: {job.salary}
-                    </Typography>
-                    <Typography variant="body2">
-                      Job Type: {job.jobType}
-                    </Typography>
                   </CardContent>
-                  <CardActions>
-                    <Button size="small" variant="contained" color="primary" onClick={() => handleApplyClick(job)}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Typography variant="body2" sx={{ backgroundColor: 'lightblue', borderRadius: 2, padding: '2px 8px' }}>
+                      {job.jobType}
+                    </Typography>
+                    <Button size="small" variant="contained" color="primary" onClick={() => handleApplyClick(job)} sx={{ mt: 1 }}>
                       Apply Now
                     </Button>
-                  </CardActions>
+                  </Box>
                 </Card>
               </Grid>
             ))}

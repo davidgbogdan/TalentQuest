@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Alert } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Box, Alert, Checkbox, FormControlLabel, Typography } from '@mui/material';
 import { applyToJob } from '../services/applicationService';
 
 const ApplyJobPopup = ({ job, open, onClose }) => {
   const [cvFile, setCvFile] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const handleFileChange = (event) => {
     setCvFile(event.target.files[0]);
@@ -14,6 +15,11 @@ const ApplyJobPopup = ({ job, open, onClose }) => {
   const handleApply = async () => {
     if (!cvFile) {
       setError('Please upload your CV.');
+      return;
+    }
+
+    if (!acceptedTerms) {
+      setError('You must accept the terms and conditions.');
       return;
     }
 
@@ -36,15 +42,41 @@ const ApplyJobPopup = ({ job, open, onClose }) => {
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Apply for {job.name}</DialogTitle>
+      <DialogTitle>Apply for this job</DialogTitle>
       <DialogContent>
         {error && <Alert severity="error">{error}</Alert>}
         {success && <Alert severity="success">{success}</Alert>}
-        <TextField
-          type="file"
-          fullWidth
-          onChange={handleFileChange}
-          inputProps={{ accept: '.pdf,.doc,.docx' }}
+        <Box
+          sx={{
+            border: '2px dashed #ccc',
+            borderRadius: 2,
+            padding: 2,
+            textAlign: 'center',
+            marginBottom: 2,
+          }}
+        >
+          <input
+            type="file"
+            onChange={handleFileChange}
+            accept=".pdf,.doc,.docx"
+            style={{ display: 'none' }}
+            id="cv-upload"
+          />
+          <label htmlFor="cv-upload" style={{ cursor: 'pointer' }}>
+            <Box>
+              <Typography variant="body1">Upload CV (doc, docx, pdf)</Typography>
+            </Box>
+          </label>
+        </Box>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={acceptedTerms}
+              onChange={(e) => setAcceptedTerms(e.target.checked)}
+              color="primary"
+            />
+          }
+          label="You accept our Terms and Conditions and Privacy Policy"
         />
       </DialogContent>
       <DialogActions>
@@ -52,7 +84,7 @@ const ApplyJobPopup = ({ job, open, onClose }) => {
           Cancel
         </Button>
         <Button onClick={handleApply} color="primary" variant="contained">
-          Apply
+          Apply Job
         </Button>
       </DialogActions>
     </Dialog>
