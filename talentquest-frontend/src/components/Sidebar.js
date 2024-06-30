@@ -1,12 +1,7 @@
 import React from 'react';
-import { Box, List, ListItem, ListItemIcon, ListItemText, Drawer, Typography, Toolbar } from '@mui/material';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import BusinessIcon from '@mui/icons-material/Business';
-import PeopleIcon from '@mui/icons-material/People';
-import TimerIcon from '@mui/icons-material/Timer';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import SettingsIcon from '@mui/icons-material/Settings';
+import { Box, List, ListItem, ListItemIcon, ListItemText, Drawer, Toolbar } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -27,47 +22,11 @@ const Sidebar = () => {
       <Toolbar />
       <Box sx={{ overflow: 'auto' }}>
         <List>
-          <ListItem button>
+          <ListItem button component={Link} to="/profile">
             <ListItemIcon>
-              <DashboardIcon />
+              <AccountCircleIcon />
             </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <PeopleIcon />
-            </ListItemIcon>
-            <ListItemText primary="Employees" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <TimerIcon />
-            </ListItemIcon>
-            <ListItemText primary="Time Management" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <AttachMoneyIcon />
-            </ListItemIcon>
-            <ListItemText primary="Payroll" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <BarChartIcon />
-            </ListItemIcon>
-            <ListItemText primary="Report Analytics" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <BusinessIcon />
-            </ListItemIcon>
-            <ListItemText primary="User Authentication" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Settings" />
+            <ListItemText primary="Profile" />
           </ListItem>
         </List>
       </Box>
