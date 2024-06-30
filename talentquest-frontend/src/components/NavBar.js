@@ -38,7 +38,7 @@ const NavBar = () => {
   };
 
   return (
-    <StyledAppBar position="static">
+    <StyledAppBar position="fixed">
       <Container maxWidth="lg">
         <StyledToolbar>
           <StyledTypography variant="h6">

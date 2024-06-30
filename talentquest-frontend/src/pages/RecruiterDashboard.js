@@ -1,8 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, Box, Paper, Button, TextField, Grid, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, FormControl, InputLabel, Select, MenuItem, Alert } from '@mui/material';
+import {
+  Container,
+  Typography,
+  Box,
+  Paper,
+  Button,
+  TextField,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Alert,
+} from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { getJobsForRecruiter, addJob } from '../services/recruiterService';
-import Sidebar from '../components/Sidebar';
 import JobDetailsPopup from '../components/JobDetailsPopup';
 
 const RecruiterDashboard = () => {
@@ -13,7 +30,7 @@ const RecruiterDashboard = () => {
     location: '',
     companyName: '',
     salary: '',
-    jobType: 'FULL_TIME'
+    jobType: 'FULL_TIME',
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -36,7 +53,7 @@ const RecruiterDashboard = () => {
   const handleChange = (e) => {
     setNewJob({
       ...newJob,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -51,7 +68,7 @@ const RecruiterDashboard = () => {
         location: '',
         companyName: '',
         salary: '',
-        jobType: 'FULL_TIME'
+        jobType: 'FULL_TIME',
       });
       setSuccess('Job added successfully!');
       setTimeout(() => setSuccess(''), 3000);
@@ -71,18 +88,17 @@ const RecruiterDashboard = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <Sidebar />
-      <Container component="main" maxWidth="lg" sx={{ mt: 4 }}>
+    <Box sx={{ display: 'flex', width: '100%' }}>
+      <Container component="main" maxWidth="lg" sx={{ mt: 4, ml: 0, pl: 0 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Recruiter Dashboard
         </Typography>
         <Box>
-          {error && <Alert severity="error">{error}</Alert>}
-          {success && <Alert severity="success">{success}</Alert>}
+          {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
+          {success && <Alert severity="success" sx={{ mb: 3 }}>{success}</Alert>}
           <Grid container spacing={4}>
             <Grid item xs={12} md={6}>
-              <Paper elevation={3} sx={{ p: 3 }}>
+              <Paper elevation={3} sx={{ p: 3, borderRadius: '10px' }}>
                 <Typography variant="h6" component="h2" gutterBottom>
                   Add New Job
                 </Typography>
@@ -95,6 +111,8 @@ const RecruiterDashboard = () => {
                     fullWidth
                     margin="normal"
                     required
+                    variant="outlined"
+                    sx={{ mb: 2 }}
                   />
                   <TextField
                     label="Description"
@@ -106,6 +124,8 @@ const RecruiterDashboard = () => {
                     multiline
                     rows={4}
                     required
+                    variant="outlined"
+                    sx={{ mb: 2 }}
                   />
                   <TextField
                     label="Location"
@@ -115,6 +135,8 @@ const RecruiterDashboard = () => {
                     fullWidth
                     margin="normal"
                     required
+                    variant="outlined"
+                    sx={{ mb: 2 }}
                   />
                   <TextField
                     label="Company Name"
@@ -124,6 +146,8 @@ const RecruiterDashboard = () => {
                     fullWidth
                     margin="normal"
                     required
+                    variant="outlined"
+                    sx={{ mb: 2 }}
                   />
                   <TextField
                     label="Salary"
@@ -134,8 +158,10 @@ const RecruiterDashboard = () => {
                     margin="normal"
                     type="number"
                     required
+                    variant="outlined"
+                    sx={{ mb: 2 }}
                   />
-                  <FormControl fullWidth margin="normal">
+                  <FormControl fullWidth margin="normal" variant="outlined" sx={{ mb: 2 }}>
                     <InputLabel>Job Type</InputLabel>
                     <Select
                       name="jobType"
@@ -162,13 +188,19 @@ const RecruiterDashboard = () => {
               </Paper>
             </Grid>
             <Grid item xs={12} md={6}>
-              <Paper elevation={3} sx={{ p: 3 }}>
+              <Paper elevation={3} sx={{ p: 3, borderRadius: '10px' }}>
                 <Typography variant="h6" component="h2" gutterBottom>
                   Your Jobs
                 </Typography>
                 <List>
                   {jobs.map((job) => (
-                    <ListItem key={job.id} divider button onClick={() => handleJobClick(job)}>
+                    <ListItem
+                      key={job.id}
+                      divider
+                      button
+                      onClick={() => handleJobClick(job)}
+                      sx={{ borderRadius: '5px', '&:hover': { backgroundColor: '#f1f1f1' } }}
+                    >
                       <ListItemText
                         primary={job.name}
                         secondary={`${job.description} - ${job.location} - ${job.salary}`}
@@ -186,11 +218,7 @@ const RecruiterDashboard = () => {
           </Grid>
         </Box>
         {selectedJob && (
-          <JobDetailsPopup
-            job={selectedJob}
-            open={isPopupOpen}
-            onClose={handleClosePopup}
-          />
+          <JobDetailsPopup job={selectedJob} open={isPopupOpen} onClose={handleClosePopup} />
         )}
       </Container>
     </Box>

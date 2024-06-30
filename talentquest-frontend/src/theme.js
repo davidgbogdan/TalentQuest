@@ -10,11 +10,13 @@ const theme = createTheme({
     },
   },
   typography: {
-    h2: {
-      fontWeight: 600,
+    h4: {
+      fontSize: '2rem',
+      fontWeight: 500,
     },
-    h5: {
-      fontWeight: 300,
+    h6: {
+      fontSize: '1.25rem',
+      fontWeight: 400,
     },
   },
 });

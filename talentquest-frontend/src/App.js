@@ -14,10 +14,10 @@ function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/register" element={<RegisterPage />} />
       
-      <Route element={<Layout />}>
-        <Route path="/recruiter-dashboard" element={<ProtectedRoute><RecruiterDashboard /></ProtectedRoute>} />
-        <Route path="/candidate-dashboard" element={<ProtectedRoute><CandidateDashboard /></ProtectedRoute>} />
-        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+      <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+        <Route path="/recruiter-dashboard" element={<RecruiterDashboard />} />
+        <Route path="/candidate-dashboard" element={<CandidateDashboard />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Route>
     </Routes>
   );

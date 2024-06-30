@@ -61,8 +61,8 @@ const ProfilePage = () => {
   };
 
   return (
-    <Container component="main" maxWidth="sm">
-      <Box sx={{ mt: 4 }}>
+    <Box sx={{ display: 'flex', width: '100%' }}>
+      <Container component="main" maxWidth="sm" sx={{ mt: 4, ml: 0, pl: 0 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Profile
         </Typography>
@@ -114,8 +114,8 @@ const ProfilePage = () => {
             Update Profile
           </Button>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </Box>
   );
 };
 

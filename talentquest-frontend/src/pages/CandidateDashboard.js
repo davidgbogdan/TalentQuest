@@ -34,9 +34,8 @@ const CandidateDashboard = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <Sidebar />
-      <Container component="main" maxWidth="lg" sx={{ mt: 4 }}>
+    <Box sx={{ display: 'flex', width: '100%' }}>
+      <Container component="main" maxWidth="lg" sx={{ mt: 4, ml: 0, pl: 0 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Available Jobs
         </Typography>
