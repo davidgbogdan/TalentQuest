@@ -14,7 +14,7 @@ const Sidebar = () => {
         '& .MuiDrawer-paper': {
           width: drawerWidth,
           boxSizing: 'border-box',
-          marginTop: '64px', // Ensure the sidebar starts below the NavBar
+          marginTop: '64px', 
         },
       }}
       variant="permanent"
