@@ -1,7 +1,6 @@
 package live.talentquest.resource;
 
-import live.talentquest.dto.application.ApplicationRequestDto;
-import live.talentquest.dto.application.ApplicationResponseDto;
+import live.talentquest.dto.application.*;
 import live.talentquest.entity.CV;
 import live.talentquest.service.ApplicationService;
 import lombok.AllArgsConstructor;
@@ -45,5 +44,23 @@ public class ApplicationResource {
         return ResponseEntity.ok()
                 .header("Content-Disposition", "attachment; filename=" + cv.getFileName())
                 .body(cv.getFileData());
+    }
+
+    @GetMapping("/count")
+    @Secured("RECRUITER")
+    public List<ApplicationCountByJobDto> getApplicationCountByJob() {
+        return applicationService.getApplicationCountByJob();
+    }
+
+    @GetMapping("/status")
+    @Secured("RECRUITER")
+    public List<ApplicationStatusDistributionDto> getApplicationStatusDistribution() {
+        return applicationService.getApplicationStatusDistribution();
+    }
+
+    @GetMapping("/average")
+    @Secured("RECRUITER")
+    public List<AverageMatchScoreByJobDto> getAverageMatchScoreByJob() {
+        return applicationService.getAverageMatchScoreByJob();
     }
 }

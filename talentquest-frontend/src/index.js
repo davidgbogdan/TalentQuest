@@ -6,6 +6,17 @@ import App from './App';
 import theme from './theme';
 import './global.css';
 
+
+const resizeObserverLoopErrRe = /^ResizeObserver loop limit exceeded/;
+
+const originalError = console.error;
+console.error = (...args) => {
+  if (resizeObserverLoopErrRe.test(args[0])) {
+    return;
+  }
+  originalError.call(console, ...args);
+};
+
 ReactDOM.render(
   <ThemeProvider theme={theme}>
     <Router>

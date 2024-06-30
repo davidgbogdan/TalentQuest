@@ -1,10 +1,10 @@
 package live.talentquest.service;
 
-import live.talentquest.dto.application.ApplicationRequestDto;
-import live.talentquest.dto.application.ApplicationResponseDto;
+import live.talentquest.dto.application.*;
 import live.talentquest.entity.Application;
 import live.talentquest.entity.CV;
 import live.talentquest.entity.Candidate;
+import live.talentquest.entity.Job;
 import live.talentquest.enums.ApplicationStatus;
 import live.talentquest.repository.ApplicationRepository;
 import live.talentquest.repository.JobRepository;
@@ -18,6 +18,7 @@ import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -97,5 +98,29 @@ public class ApplicationService {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
         return application.getCv();
+    }
+
+    public List<ApplicationCountByJobDto> getApplicationCountByJob() {
+        List<Job> jobs = jobRepository.findAll();
+        return jobs.stream()
+                .map(job -> new ApplicationCountByJobDto(job.getId(), job.getName(), applicationRepository.countByJob(job)))
+                .collect(Collectors.toList());
+    }
+
+    public List<ApplicationStatusDistributionDto> getApplicationStatusDistribution() {
+        return Arrays.stream(ApplicationStatus.values())
+                .map(status -> new ApplicationStatusDistributionDto(status, applicationRepository.countByApplicationStatus(status)))
+                .collect(Collectors.toList());
+    }
+
+    public List<AverageMatchScoreByJobDto> getAverageMatchScoreByJob() {
+        List<Job> jobs = jobRepository.findAll();
+        return jobs.stream()
+                .map(job -> {
+                    List<Application> applications = applicationRepository.findByJob(job);
+                    double averageMatchScore = applications.stream().mapToDouble(Application::getMatchScore).average().orElse(0);
+                    return new AverageMatchScoreByJobDto(job.getId(), job.getName(), averageMatchScore);
+                })
+                .collect(Collectors.toList());
     }
 }
