@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Container, Grid, Card, CardContent, CardActions, Button, Typography, Box } from '@mui/material';
 import { getAllJobs } from '../services/jobService';
 import Sidebar from '../components/Sidebar';
+import ApplyJobPopup from '../components/ApplyJobPopup';
 
 const CandidateDashboard = () => {
   const [jobs, setJobs] = useState([]);
   const [error, setError] = useState('');
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     fetchJobs();
@@ -18,6 +21,16 @@ const CandidateDashboard = () => {
     } catch (error) {
       setError('Error fetching jobs: ' + error.message);
     }
+  };
+
+  const handleApplyClick = (job) => {
+    setSelectedJob(job);
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+    setSelectedJob(null);
   };
 
   return (
@@ -54,7 +67,7 @@ const CandidateDashboard = () => {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small" variant="contained" color="primary">
+                    <Button size="small" variant="contained" color="primary" onClick={() => handleApplyClick(job)}>
                       Apply Now
                     </Button>
                   </CardActions>
@@ -63,6 +76,13 @@ const CandidateDashboard = () => {
             ))}
           </Grid>
         </Box>
+        {selectedJob && (
+          <ApplyJobPopup
+            job={selectedJob}
+            open={isPopupOpen}
+            onClose={handleClosePopup}
+          />
+        )}
       </Container>
     </Box>
   );
