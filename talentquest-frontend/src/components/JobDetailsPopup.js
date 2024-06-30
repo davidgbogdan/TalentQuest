@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Dialog, DialogTitle, DialogContent, List, ListItem, ListItemText, Button, IconButton, Grid, Divider } from '@mui/material';
+import { Box, Typography, Dialog, DialogTitle, DialogContent, List, ListItem, ListItemText, Button, IconButton, Grid, Divider, TextField, Alert } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { getApplicationsByJob, getCvByApplicationId } from '../services/applicationService';
 import PDFViewer from './PDFViewer';
+import axios from 'axios';
 
 const JobDetailsPopup = ({ job, open, onClose }) => {
   const [applications, setApplications] = useState([]);
   const [selectedCv, setSelectedCv] = useState(null);
+  const [interviewDetails, setInterviewDetails] = useState({
+    link: '',
+    date: '',
+    startTime: '',
+    endTime: ''
+  });
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   useEffect(() => {
     if (job) {
@@ -23,20 +31,6 @@ const JobDetailsPopup = ({ job, open, onClose }) => {
     }
   };
 
-  const handleDownloadCv = async (applicationId) => {
-    try {
-      const response = await getCvByApplicationId(applicationId);
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', response.headers['content-disposition'].split('filename=')[1]);
-      document.body.appendChild(link);
-      link.click();
-    } catch (error) {
-      console.error('Error downloading CV:', error);
-    }
-  };
-
   const handleViewCv = async (applicationId) => {
     try {
       const response = await getCvByApplicationId(applicationId);
@@ -44,6 +38,17 @@ const JobDetailsPopup = ({ job, open, onClose }) => {
       setSelectedCv(url);
     } catch (error) {
       console.error('Error fetching CV:', error);
+    }
+  };
+
+  const handleScheduleInterview = async () => {
+    try {
+      const response = await axios.post('/interviews', interviewDetails);
+      console.log('Interview scheduled:', response.data);
+    } catch (error) {
+      console.error('Error scheduling interview:', error);
+    } finally {
+      setShowSuccessMessage(true);
     }
   };
 
@@ -114,9 +119,6 @@ const JobDetailsPopup = ({ job, open, onClose }) => {
                 secondary={`Match Score: ${application.matchScore}`}
               />
               <Box>
-                <Button onClick={() => handleDownloadCv(application.id)} sx={{ mr: 1 }}>
-                  Download CV
-                </Button>
                 <Button onClick={() => handleViewCv(application.id)}>
                   View CV
                 </Button>
@@ -132,6 +134,54 @@ const JobDetailsPopup = ({ job, open, onClose }) => {
             </Typography>
             <PDFViewer fileUrl={selectedCv} />
           </Box>
+        )}
+
+        <Divider sx={{ my: 2 }} />
+
+        <Typography variant="h6" gutterBottom>
+          Schedule Interview
+        </Typography>
+        <TextField
+          label="Link"
+          value={interviewDetails.link}
+          onChange={(e) => setInterviewDetails({ ...interviewDetails, link: e.target.value })}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Date"
+          type="date"
+          value={interviewDetails.date}
+          onChange={(e) => setInterviewDetails({ ...interviewDetails, date: e.target.value })}
+          fullWidth
+          margin="normal"
+          InputLabelProps={{ shrink: true }}
+        />
+        <TextField
+          label="Start Time"
+          type="time"
+          value={interviewDetails.startTime}
+          onChange={(e) => setInterviewDetails({ ...interviewDetails, startTime: e.target.value })}
+          fullWidth
+          margin="normal"
+          InputLabelProps={{ shrink: true }}
+        />
+        <TextField
+          label="End Time"
+          type="time"
+          value={interviewDetails.endTime}
+          onChange={(e) => setInterviewDetails({ ...interviewDetails, endTime: e.target.value })}
+          fullWidth
+          margin="normal"
+          InputLabelProps={{ shrink: true }}
+        />
+        <Button onClick={handleScheduleInterview} variant="contained" color="primary" sx={{ mt: 2 }}>
+          Schedule Interview
+        </Button>
+        {showSuccessMessage && (
+          <Alert severity="success" sx={{ mt: 2 }}>
+            The interview has been created
+          </Alert>
         )}
       </DialogContent>
     </Dialog>
