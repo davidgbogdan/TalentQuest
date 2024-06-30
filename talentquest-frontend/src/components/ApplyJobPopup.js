@@ -68,23 +68,13 @@ const ApplyJobPopup = ({ job, open, onClose }) => {
             </Box>
           </label>
         </Box>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={acceptedTerms}
-              onChange={(e) => setAcceptedTerms(e.target.checked)}
-              color="primary"
-            />
-          }
-          label="You accept our Terms and Conditions and Privacy Policy"
-        />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="secondary">
           Cancel
         </Button>
         <Button onClick={handleApply} color="primary" variant="contained">
-          Apply Job
+          Apply
         </Button>
       </DialogActions>
     </Dialog>

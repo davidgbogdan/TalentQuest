@@ -17,6 +17,7 @@ const StyledTypography = styled(Typography)({
   fontWeight: 'bold',
   fontFamily: 'Roboto, sans-serif',
   fontSize: '1.5rem',
+  cursor: 'pointer',
 });
 
 const LogoutButton = styled(Button)({
@@ -37,11 +38,15 @@ const NavBar = () => {
     navigate('/');
   };
 
+  const handleRedirect = () => {
+    navigate('/recruiter-dashboard');
+  };
+
   return (
     <StyledAppBar position="fixed">
       <Container maxWidth="lg">
         <StyledToolbar>
-          <StyledTypography variant="h6">
+          <StyledTypography variant="h6" onClick={handleRedirect}>
             TalentQuest
           </StyledTypography>
           <LogoutButton variant="outlined" onClick={handleLogout}>
