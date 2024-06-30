@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Typography, Dialog, DialogTitle, DialogContent, List, ListItem, ListItemText, Button, IconButton, Grid, Divider, TextField, Alert, Paper } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { getApplicationsByJob, getCvByApplicationId } from '../services/applicationService';
@@ -16,20 +16,20 @@ const JobDetailsPopup = ({ job, open, onClose }) => {
   });
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-  useEffect(() => {
-    if (job) {
-      fetchApplications();
-    }
-  }, [job]);
-
-  const fetchApplications = async () => {
+  const fetchApplications = useCallback(async () => {
     try {
       const response = await getApplicationsByJob(job.id);
       setApplications(response.data);
     } catch (error) {
       console.error('Error fetching applications:', error);
     }
-  };
+  }, [job.id]);
+
+  useEffect(() => {
+    if (job) {
+      fetchApplications();
+    }
+  }, [job, fetchApplications]);
 
   const handleViewCv = async (applicationId) => {
     try {
@@ -45,10 +45,10 @@ const JobDetailsPopup = ({ job, open, onClose }) => {
     try {
       const response = await axios.post('/interviews', interviewDetails);
       console.log('Interview scheduled:', response.data);
+      setShowSuccessMessage(true);
+      setTimeout(() => setShowSuccessMessage(false), 3000);
     } catch (error) {
       console.error('Error scheduling interview:', error);
-    } finally {
-      setShowSuccessMessage(true);
     }
   };
 
@@ -228,14 +228,16 @@ const JobDetailsPopup = ({ job, open, onClose }) => {
                 />
               </Grid>
             </Grid>
-            <Button onClick={handleScheduleInterview} variant="contained" color="primary" sx={{ mt: 2 }}>
-              Schedule Interview
-            </Button>
             {showSuccessMessage && (
               <Alert severity="success" sx={{ mt: 2 }}>
                 The interview has been created
               </Alert>
             )}
+            <Box display="flex" justifyContent="center" sx={{ mt: 2 }}>
+              <Button onClick={handleScheduleInterview} variant="contained" color="primary">
+                Schedule Interview
+              </Button>
+            </Box>
           </>
         )}
       </DialogContent>
