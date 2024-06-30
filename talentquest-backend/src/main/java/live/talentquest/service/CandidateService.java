@@ -2,6 +2,7 @@ package live.talentquest.service;
 
 import live.talentquest.dto.candidate.CandidateRequestDto;
 import live.talentquest.dto.candidate.CandidateResponseDto;
+import live.talentquest.dto.candidate.CandidateUpdateDto;
 import live.talentquest.dto.security.JwtDto;
 import live.talentquest.dto.security.UserSessionDto;
 import live.talentquest.entity.Candidate;
@@ -53,5 +54,17 @@ public class CandidateService {
         Role role = Role.CANDIDATE;
 
         return new JwtDto(jwt, role);
+    }
+
+    public CandidateResponseDto getProfile() {
+        var currentCandidate = getCurrentCandidate();
+        return modelMapper.map(currentCandidate, CandidateResponseDto.class);
+    }
+
+    public CandidateResponseDto updateProfile(CandidateUpdateDto candidateUpdateDto) {
+        var currentCandidate = getCurrentCandidate();
+        modelMapper.map(candidateUpdateDto, currentCandidate);
+        var updatedCandidate = candidateRepository.save(currentCandidate);
+        return modelMapper.map(updatedCandidate, CandidateResponseDto.class);
     }
 }

@@ -46,9 +46,10 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
-                        .requestMatchers(HttpMethod.POST).permitAll()
-                        .requestMatchers("/recruiters/**").permitAll()
-                        .requestMatchers("/candidates/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/recruiters/sessions", "/candidates/sessions").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/recruiters", "/candidates").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/recruiters/me", "/candidates/me").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/recruiters/me", "/candidates/me").authenticated()
                         .requestMatchers("/jobs/**").permitAll()
                         .requestMatchers("/applications/**").permitAll()
                         .anyRequest().authenticated())
