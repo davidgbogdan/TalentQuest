@@ -7,6 +7,7 @@ import RecruiterDashboard from './pages/RecruiterDashboard';
 import CandidateDashboard from './pages/CandidateDashboard';
 import ProfilePage from './pages/ProfilePage';
 import AnalyticsAndMetricsPage from './pages/AnalyticsAndMetricsPage';
+import InterviewsPage from './pages/InterviewsPage';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/candidate-dashboard" element={<CandidateDashboard />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/analytics" element={<AnalyticsAndMetricsPage />} />
+        <Route path="/interviews" element={<InterviewsPage />} />
       </Route>
     </Routes>
   );
