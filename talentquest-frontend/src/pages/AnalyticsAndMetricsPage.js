@@ -5,7 +5,7 @@ import { Bar, Doughnut, Line, Radar } from 'react-chartjs-2';
 import 'chart.js/auto';
 
 const applicationsData = {
-  labels: ['Java Engineer', 'Python Engineer', 'JavaScript Developer', 'C# Developer', 'Ruby Developer'],
+  labels: ['DevOps Engineer', 'SQL Administrator', 'Test - Java'],
   datasets: [
     {
       label: 'Count of Applications',
@@ -14,17 +14,17 @@ const applicationsData = {
       borderWidth: 1,
       hoverBackgroundColor: 'rgba(75,192,192,0.4)',
       hoverBorderColor: 'rgba(75,192,192,1)',
-      data: [34, 45, 23, 37, 29],
+      data: [1, 1, 1],
     },
   ],
 };
 
 const statusDistributionData = {
-  labels: ['Applied', 'Interviewed', 'Hired', 'Rejected'],
+  labels: ['Applied', 'Interview', 'Hired', 'Rejected'],
   datasets: [
     {
       label: 'Application Status Distribution',
-      data: [65, 59, 80, 81],
+      data: [3, 1],
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',
         'rgba(54, 162, 235, 0.2)',
@@ -43,7 +43,7 @@ const statusDistributionData = {
 };
 
 const matchScoreData = {
-  labels: ['Java Engineer', 'Python Engineer', 'JavaScript Developer', 'C# Developer', 'Ruby Developer'],
+  labels: ['DevOps Engineer', 'SQL Administrator', 'Test - Java'],
   datasets: [
     {
       label: 'Average Match Score',
@@ -64,13 +64,13 @@ const matchScoreData = {
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-      data: [8.5, 9.0, 7.8, 8.8, 8.2],
+      data: [0, 5, 10],
     },
   ],
 };
 
 const skillDistributionData = {
-  labels: ['Java', 'Python', 'JavaScript', 'C#', 'Ruby'],
+  labels: ['SQL', 'Linux', 'Terraform', 'CI/CD', 'Java', 'Spring Boot'],
   datasets: [
     {
       label: 'Skill Distribution',
@@ -80,7 +80,7 @@ const skillDistributionData = {
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(255,99,132,1)',
-      data: [9, 8, 7, 6, 5],
+      data: [2.5, 0, 0, 0, 10, 10],
     },
     {
       label: 'Candidates',
@@ -90,7 +90,7 @@ const skillDistributionData = {
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(54, 162, 235, 1)',
-      data: [6, 7, 8, 9, 7],
+      data: [1, 1, 1, 1, 1, 1],
     },
   ],
 };

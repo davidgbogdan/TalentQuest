@@ -52,13 +52,13 @@ const InterviewsPage = () => {
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <InterviewAvatar>JD</InterviewAvatar>
             <Typography variant="h5" component="div" gutterBottom>
-              Interview with Jane Doe
+              Interview with Test Candidat
             </Typography>
           </Box>
-          <InterviewDetail icon={WorkIcon} text="Position: Senior JavaScript Developer" />
-          <InterviewDetail icon={EventIcon} text="Date: July 10, 2024" />
+          <InterviewDetail icon={WorkIcon} text="Position: Test - Java" />
+          <InterviewDetail icon={EventIcon} text="Date: July 3, 2024" />
           <InterviewDetail icon={AccessTimeIcon} text="Time: 10:00 AM - 11:00 AM" />
-          <InterviewDetail icon={RoomIcon} text="Location: Zoom" />
+          <InterviewDetail icon={RoomIcon} text="LINK: test" />
         </StyledCardContent>
       </StyledCard>
     </Container>

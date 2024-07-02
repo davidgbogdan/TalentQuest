@@ -32,4 +32,9 @@ public class JobResource {
     public JobResponseDto addJob(@RequestBody @Valid JobRequestDto jobRequestDto){
         return jobService.addJob(jobRequestDto);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteJob(@PathVariable long id){
+        jobService.deleteJob(id);
+    }
 }
