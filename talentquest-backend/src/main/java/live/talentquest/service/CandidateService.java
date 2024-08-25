@@ -7,6 +7,7 @@ import live.talentquest.dto.security.JwtDto;
 import live.talentquest.dto.security.UserSessionDto;
 import live.talentquest.entity.Candidate;
 import live.talentquest.enums.Role;
+import live.talentquest.exception.CandidateNotFoundException;
 import live.talentquest.exception.recruiter.RecruiterNotFoundException;
 import live.talentquest.repository.CandidateRepository;
 import live.talentquest.security.CustomUserDetails;
@@ -48,7 +49,7 @@ public class CandidateService {
         ));
 
         var user = candidateRepository.findByEmail(userSessionDto.getEmail())
-                .orElseThrow(RecruiterNotFoundException::new);
+                .orElseThrow(CandidateNotFoundException::new);
 
         String jwt = jwtProvider.generateJwt(user);
         Role role = Role.CANDIDATE;

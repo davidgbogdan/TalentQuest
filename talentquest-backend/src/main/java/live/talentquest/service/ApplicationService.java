@@ -6,6 +6,8 @@ import live.talentquest.entity.Application;
 import live.talentquest.entity.CV;
 import live.talentquest.entity.Candidate;
 import live.talentquest.enums.ApplicationStatus;
+import live.talentquest.exception.application.ApplicationNotFoundException;
+import live.talentquest.exception.job.JobNotFoundException;
 import live.talentquest.repository.ApplicationRepository;
 import live.talentquest.repository.JobRepository;
 import live.talentquest.security.CustomUserDetails;
@@ -35,7 +37,7 @@ public class ApplicationService {
     public void applyToJob(ApplicationRequestDto applicationRequestDto) throws IOException, TikaException, SAXException {
         var candidate = getCurrentCandidate();
         var job = jobRepository.findById(applicationRequestDto.getJobId())
-                .orElseThrow(() -> new RuntimeException("Job not found"));
+                .orElseThrow(JobNotFoundException::new);
 
         Application application = Application.builder()
                 .applicationStatus(ApplicationStatus.PENDING)
@@ -76,7 +78,7 @@ public class ApplicationService {
 
     public List<ApplicationResponseDto> getApplicationsByJob(Long jobId) {
         var job = jobRepository.findById(jobId)
-                .orElseThrow(() -> new RuntimeException("Job not found"));
+                .orElseThrow(JobNotFoundException::new);
 
         List<Application> applications = applicationRepository.findByJob(job);
         return applications.stream()
@@ -95,7 +97,7 @@ public class ApplicationService {
 
     public CV getCvByApplicationId(Long applicationId) {
         Application application = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new RuntimeException("Application not found"));
+                .orElseThrow(ApplicationNotFoundException::new);
         return application.getCv();
     }
 
