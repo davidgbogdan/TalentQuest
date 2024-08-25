@@ -2,7 +2,6 @@ package live.talentquest.service;
 
 import live.talentquest.dto.job.JobRequestDto;
 import live.talentquest.dto.job.JobResponseDto;
-import live.talentquest.entity.Candidate;
 import live.talentquest.entity.Job;
 import live.talentquest.entity.Recruiter;
 import live.talentquest.repository.JobRepository;

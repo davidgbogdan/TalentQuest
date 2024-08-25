@@ -15,8 +15,6 @@ import java.util.List;
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
     List<Application> findByJob(Job job);
 
-    Long countByApplicationStatus(ApplicationStatus status);
-
     @Query("SELECT new live.talentquest.dto.application.ApplicationCountByJobDto(j.id, j.name, COUNT(a)) " +
             "FROM Application a JOIN a.job j GROUP BY j.id, j.name")
     List<ApplicationCountByJobDto> countApplicationsByJob();
@@ -24,6 +22,4 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
     @Query("SELECT new live.talentquest.dto.application.ApplicationStatusDistributionDto(a.applicationStatus, COUNT(a)) " +
             "FROM Application a GROUP BY a.applicationStatus")
     List<ApplicationStatusDistributionDto> countApplicationStatusDistribution();
-
-    Long countByJob(Job job);
 }

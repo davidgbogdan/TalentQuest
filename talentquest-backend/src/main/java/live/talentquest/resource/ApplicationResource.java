@@ -30,7 +30,6 @@ public class ApplicationResource {
         applicationRequestDto.setCvFile(cvFile);
         applicationService.applyToJob(applicationRequestDto);
     }
-
     @GetMapping("/job/{jobId}")
     @Secured("RECRUITER")
     public List<ApplicationResponseDto> getApplicationsByJob(@PathVariable Long jobId) {
@@ -44,23 +43,5 @@ public class ApplicationResource {
         return ResponseEntity.ok()
                 .header("Content-Disposition", "attachment; filename=" + cv.getFileName())
                 .body(cv.getFileData());
-    }
-
-    @GetMapping("/count")
-    @Secured("RECRUITER")
-    public List<ApplicationCountByJobDto> getApplicationCountByJob() {
-        return applicationService.getApplicationCountByJob();
-    }
-
-    @GetMapping("/status")
-    @Secured("RECRUITER")
-    public List<ApplicationStatusDistributionDto> getApplicationStatusDistribution() {
-        return applicationService.getApplicationStatusDistribution();
-    }
-
-    @GetMapping("/average")
-    @Secured("RECRUITER")
-    public List<AverageMatchScoreByJobDto> getAverageMatchScoreByJob() {
-        return applicationService.getAverageMatchScoreByJob();
     }
 }

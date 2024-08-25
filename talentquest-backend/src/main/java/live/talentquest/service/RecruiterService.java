@@ -5,7 +5,6 @@ import live.talentquest.dto.recruiter.RecruiterResponseDto;
 import live.talentquest.dto.recruiter.RecruiterUpdateDto;
 import live.talentquest.dto.security.JwtDto;
 import live.talentquest.dto.security.UserSessionDto;
-import live.talentquest.entity.Candidate;
 import live.talentquest.entity.Recruiter;
 import live.talentquest.enums.Role;
 import live.talentquest.exception.recruiter.RecruiterNotFoundException;

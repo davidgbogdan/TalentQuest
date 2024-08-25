@@ -7,9 +7,9 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class KeywordExtractorService {
@@ -21,7 +21,7 @@ public class KeywordExtractorService {
     }
 
     public static Set<String> extractKeywords(String text) {
-        return List.of(text.split("\\W+")).stream()
+        return Stream.of(text.split("\\W+"))
                 .map(String::toLowerCase)
                 .filter(word -> word.length() > 2)
                 .collect(Collectors.toSet());
